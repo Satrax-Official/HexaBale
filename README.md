@@ -2,7 +2,7 @@
 
 [![NuGet Version](https://img.shields.io/nuget/v/HexaBale)](https://www.nuget.org/packages/HexaBale)
 [![NuGet Downloads](https://img.shields.io/nuget/dt/HexaBale)](https://www.nuget.org/packages/HexaBale)
-[![License](https://img.shields.io/github/license/hexateam/HexaBale)](https://github.com/hexateam/HexaBale/blob/main/LICENSE)
+[![License](https://img.shields.io/github/license/Satrax-Official/HexaBale)](https://github.com/Satrax-Official/HexaBale/blob/master/LICENSE.txt)
 [![.NET](https://img.shields.io/badge/.NET-8.0-blue)](https://dotnet.microsoft.com/)
 
 **HexaBale** is a modern, strongly-typed .NET client library for the **Bale Messenger Bot API**. It provides a complete, async-first interface to interact with Bale bots, with full support for all API methods including messages, media, keyboards, payments, and more.
