@@ -9,8 +9,8 @@
 		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 		<!-- NuGet Package Properties -->
 		<PackageId>HexaBale</PackageId>
-		<Version>1.0.0</Version>
-		<Authors>Satrax (Alireza Rangraz Jeddy)</Authors>
+		<Version>1.1.0</Version>
+		<Authors>Satrax (Alireza Rangraz Jeddy / Ramin Rangraz Jeddy)</Authors>
 		<Company>Hexagon</Company>
 		<Description>Unofficial Bale Messenger Bot API client for .NET</Description>
 		<PackageTags>bale;bot;telegram;messenger;api;hexabale</PackageTags>
@@ -31,5 +31,9 @@
 	</ItemGroup>
 	<ItemGroup>
 		<None Include="README.md" Pack="true" PackagePath="\" />
+	</ItemGroup>
+	<PackageIcon>icon.png</PackageIcon>
+	<ItemGroup>
+		<None Include="icon.png" Pack="true" PackagePath="\" />
 	</ItemGroup>
 </Project>

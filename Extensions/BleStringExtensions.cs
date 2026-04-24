@@ -51,7 +51,7 @@ public static class BleStringExtensions
     /// </remarks>
     /// <example>
     /// <code>
-    /// var safeText = "Hello & World".EscapeHtml();
+    /// var safeText = "Hello World".EscapeHtml();
     /// // Result: "Hello &amp; World"
     /// </code>
     /// </example>

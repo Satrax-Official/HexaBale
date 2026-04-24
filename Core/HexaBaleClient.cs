@@ -285,7 +285,35 @@ public class HexaBaleClient
         };
         return await PostAsync<BleMessage>("sendAnimation", request, cancellationToken);
     }
+    /// <summary>
+    /// Sends a media group (album) containing photos and videos.
+    /// </summary>
+    /// <param name="chatId">Target chat ID or username</param>
+    /// <param name="media">List of photos and videos to send</param>
+    /// <param name="disableNotification">Send silently</param>
+    /// <param name="cancellationToken">Cancellation token</param>
+    /// <returns>List of sent messages</returns>
+    public async Task<List<BleMessage>?> SendMediaGroupAsync(
+        string chatId,
+        List<BleInputMedia> media,
+        bool disableNotification = false,
+        CancellationToken cancellationToken = default)
+    {
+        var payload = new
+        {
+            chat_id = chatId,
+            media = media.Select(m => new
+            {
+                type = m.Type,
+                media = m.Media,
+                caption = m.Caption,
+                parse_mode = m.ParseMode?.ToString()
+            }),
+            disable_notification = disableNotification
+        };
 
+        return await PostAsync<List<BleMessage>>("sendMediaGroup", payload, cancellationToken);
+    }
     /// <summary>
     /// Sends a message with an inline keyboard.
     /// </summary>
