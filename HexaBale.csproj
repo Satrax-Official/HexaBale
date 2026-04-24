@@ -7,6 +7,7 @@
 		<IncludeSymbols>true</IncludeSymbols>
 		<SymbolPackageFormat>snupkg</SymbolPackageFormat>
 		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+
 		<!-- NuGet Package Properties -->
 		<PackageId>HexaBale</PackageId>
 		<Version>1.1.0</Version>
@@ -19,6 +20,7 @@
 		<RepositoryUrl>https://github.com/Satrax-Official/HexaBale</RepositoryUrl>
 		<PackageReadmeFile>README.md</PackageReadmeFile>
 		<GenerateDocumentationFile>true</GenerateDocumentationFile>
+		<PackageIcon>icon.png</PackageIcon> 
 
 		<!-- Assembly Properties -->
 		<AssemblyName>HexaBale</AssemblyName>
@@ -29,11 +31,13 @@
 		<PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="8.0.0" />
 		<PackageReference Include="Microsoft.Extensions.Http" Version="8.0.0" />
 	</ItemGroup>
+
 	<ItemGroup>
 		<None Include="README.md" Pack="true" PackagePath="\" />
 	</ItemGroup>
-	<PackageIcon>icon.png</PackageIcon>
+
 	<ItemGroup>
 		<None Include="icon.png" Pack="true" PackagePath="\" />
 	</ItemGroup>
+
 </Project>
