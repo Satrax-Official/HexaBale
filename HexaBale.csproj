@@ -10,7 +10,7 @@
 
 		<!-- NuGet Package Properties -->
 		<PackageId>HexaBale</PackageId>
-		<Version>1.1.0</Version>
+		<Version>1.2.0</Version>
 		<Authors>Satrax (Alireza Rangraz Jeddy / Ramin Rangraz Jeddy)</Authors>
 		<Company>Hexagon</Company>
 		<Description>Unofficial Bale Messenger Bot API client for .NET</Description>
