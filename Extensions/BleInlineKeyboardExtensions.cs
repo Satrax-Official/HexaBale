@@ -1,4 +1,5 @@
-﻿using HexaBale.Models;
+﻿using System.Text.Json;
+using HexaBale.Models;
 using HexaBale.Enums;
 
 namespace HexaBale.Extensions;
@@ -11,6 +12,63 @@ namespace HexaBale.Extensions;
 /// </remarks>
 public static class BleInlineKeyboardExtensions
 {
+    /// <summary>
+    /// Creates an inline keyboard markup from a JSON string.
+    /// </summary>
+    /// <param name="json">The JSON string representing the inline keyboard.</param>
+    /// <returns>A new <see cref="BleInlineKeyboardMarkup"/> instance populated from the JSON.</returns>
+    /// <remarks>
+    /// Expected JSON format:
+    /// <code>
+    /// {
+    ///     "inline_keyboard": [
+    ///         [
+    ///             {"text": "👍 Like", "callback_data": "like"},
+    ///             {"text": "👎 Dislike", "callback_data": "dislike"}
+    ///         ]
+    ///     ]
+    /// }
+    /// </code>
+    /// </remarks>
+    /// <example>
+    /// <code>
+    /// var json = "{\"inline_keyboard\":[[{\"text\":\"Like\",\"callback_data\":\"like\"}]]}";
+    /// var keyboard = json.FromJson();
+    /// </code>
+    /// </example>
+    public static BleInlineKeyboardMarkup FromJson(this string json)
+    {
+        var options = new JsonSerializerOptions
+        {
+            PropertyNamingPolicy = JsonNamingPolicy.SnakeCaseLower
+        };
+
+        return JsonSerializer.Deserialize<BleInlineKeyboardMarkup>(json, options)
+               ?? new BleInlineKeyboardMarkup();
+    }
+
+    /// <summary>
+    /// Converts an inline keyboard markup to a JSON string.
+    /// </summary>
+    /// <param name="keyboard">The inline keyboard markup to convert.</param>
+    /// <returns>A JSON string representation of the keyboard.</returns>
+    /// <example>
+    /// <code>
+    /// var keyboard = new BleInlineKeyboardMarkup();
+    /// var json = keyboard.ToJson();
+    /// </code>
+    /// </example>
+    public static string ToJson(this BleInlineKeyboardMarkup keyboard)
+    {
+        var options = new JsonSerializerOptions
+        {
+            PropertyNamingPolicy = JsonNamingPolicy.SnakeCaseLower,
+            WriteIndented = false
+        };
+
+        return JsonSerializer.Serialize(keyboard, options);
+    }
+
     /// <summary>
     /// Adds a callback button to the current row of the keyboard.
     /// </summary>

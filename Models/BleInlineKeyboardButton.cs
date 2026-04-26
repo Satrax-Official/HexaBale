@@ -3,70 +3,91 @@
 namespace HexaBale.Models;
 
 /// <summary>
-/// Represents a single button in an inline keyboard.
+/// Represents a button in an inline keyboard that appears below a message.
 /// </summary>
-/// <remarks>
-/// Buttons can perform various actions: send callback data, open URLs, launch Web Apps, etc.
-/// </remarks>
 public class BleInlineKeyboardButton
 {
     /// <summary>
-    /// Label text displayed on the button.
+    /// Gets or sets the text displayed on the button.
     /// </summary>
     [JsonPropertyName("text")]
-    public string? Text { get; set; }
+    public string Text { get; set; } = string.Empty;
 
     /// <summary>
-    /// HTTP URL to be opened when the button is pressed.
-    /// </summary>
-    [JsonPropertyName("url")]
-    public string? Url { get; set; }
-
-    /// <summary>
-    /// Data to be sent in a callback query to the bot when pressed.
+    /// Gets or sets the callback data to be sent to the bot when the button is pressed.
     /// </summary>
     [JsonPropertyName("callback_data")]
     public string? CallbackData { get; set; }
 
     /// <summary>
-    /// Web App that will be launched when the button is pressed.
+    /// Gets or sets the URL to be opened when the button is pressed.
     /// </summary>
-    [JsonPropertyName("web_app")]
-    public BleWebAppInfo? WebApp { get; set; }
+    [JsonPropertyName("url")]
+    public string? Url { get; set; }
 
     /// <summary>
-    /// Login URL for authentication.
+    /// Gets or sets the login URL for OAuth2 authentication.
     /// </summary>
     [JsonPropertyName("login_url")]
     public BleLoginUrl? LoginUrl { get; set; }
 
     /// <summary>
-    /// Switches to inline query mode with the specified text.
+    /// Gets or sets the Web App information for launching a mini-app.
     /// </summary>
-    [JsonPropertyName("switch_inline_query")]
-    public string? SwitchInlineQuery { get; set; }
+    [JsonPropertyName("web_app")]
+    public BleWebAppInfo? WebApp { get; set; }
 
     /// <summary>
-    /// Switches to inline query mode in the current chat.
-    /// </summary>
-    [JsonPropertyName("switch_inline_query_current_chat")]
-    public string? SwitchInlineQueryCurrentChat { get; set; }
-
-    /// <summary>
-    /// Launches a game.
-    /// </summary>
-    [JsonPropertyName("callback_game")]
-    public object? CallbackGame { get; set; }
-
-    /// <summary>
-    /// Copies the specified text to the user's clipboard.
+    /// Gets or sets the copy text button configuration.
     /// </summary>
     [JsonPropertyName("copy_text")]
     public BleCopyTextButton? CopyText { get; set; }
 
     /// <summary>
-    /// Indicates whether the button is pay-enabled (for paid content).
+    /// Gets or sets the query to be sent when switching to inline mode.
+    /// </summary>
+    [JsonPropertyName("switch_inline_query")]
+    public string? SwitchInlineQuery { get; set; }
+
+    /// <summary>
+    /// Gets or sets the query to be sent when switching to inline mode in the current chat.
+    /// </summary>
+    [JsonPropertyName("switch_inline_query_current_chat")]
+    public string? SwitchInlineQueryCurrentChat { get; set; }
+
+    /// <summary>
+    /// Gets or sets game data for callback games.
+    /// </summary>
+    [JsonPropertyName("callback_game")]
+    public object? CallbackGame { get; set; }
+
+    /// <summary>
+    /// Gets or sets a value indicating whether the button sends a payment request.
     /// </summary>
     [JsonPropertyName("pay")]
     public bool? Pay { get; set; }
+
+    // Constructors
+    public BleInlineKeyboardButton()
+    {
+    }
+
+    public BleInlineKeyboardButton(string text)
+    {
+        Text = text;
+    }
+
+    public BleInlineKeyboardButton(string text, string callbackData)
+    {
+        Text = text;
+        CallbackData = callbackData;
+    }
+
+    public BleInlineKeyboardButton(string text, string? callbackData = null, string? url = null)
+    {
+        Text = text;
+        CallbackData = callbackData;
+        Url = url;
+    }
 }
+
