@@ -86,7 +86,7 @@ public class HexaBaleClient
 
     #endregion
 
-    #region Send Message Methods (All with Inline Keyboard Support)
+    #region Send Message Methods
 
     /// <summary>
     /// Sends a text message to the specified chat.
@@ -100,10 +100,6 @@ public class HexaBaleClient
     /// <param name="cancellationToken">Cancellation token for the asynchronous operation.</param>
     /// <returns>A <see cref="BleMessage"/> object containing information about the sent message, or null if failed.</returns>
     /// <exception cref="BleApiException">Thrown when the API returns an error response.</exception>
-    /// <remarks>
-    /// The text can include emojis, mentions (using @username), and hashtags.
-    /// When using parse mode, you can format text with bold, italic, links, etc.
-    /// </remarks>
     public async Task<BleMessage?> SendMessageAsync(
         long chatId,
         string text,
@@ -132,19 +128,19 @@ public class HexaBaleClient
     /// <param name="photo">Photo to send. Can be a file_id, URL, or local path (if using multipart).</param>
     /// <param name="caption">Optional caption for the photo (0-1024 characters).</param>
     /// <param name="parseMode">Mode for parsing entities in the caption.</param>
+    /// <param name="replyToMessageId">ID of the original message to reply to.</param>
+    /// <param name="disableNotification">If true, sends the message silently.</param>
     /// <param name="replyMarkup">Inline keyboard markup for interactive buttons.</param>
     /// <param name="cancellationToken">Cancellation token for the asynchronous operation.</param>
     /// <returns>A <see cref="BleMessage"/> object containing information about the sent message, or null if failed.</returns>
     /// <exception cref="BleApiException">Thrown when the API returns an error response.</exception>
-    /// <remarks>
-    /// The photo must be at most 10 MB in size. Supported formats: JPEG, PNG, GIF (static), BMP, WEBP.
-    /// You can use an existing file_id from a previously sent photo to avoid re-uploading.
-    /// </remarks>
     public async Task<BleMessage?> SendPhotoAsync(
         long chatId,
         string photo,
         string? caption = null,
         BleParseMode? parseMode = null,
+        int? replyToMessageId = null,
+        bool disableNotification = false,
         BleInlineKeyboardMarkup? replyMarkup = null,
         CancellationToken cancellationToken = default)
     {
@@ -154,6 +150,8 @@ public class HexaBaleClient
             photo,
             caption,
             parse_mode = parseMode?.ToString(),
+            reply_to_message_id = replyToMessageId,
+            disable_notification = disableNotification,
             reply_markup = replyMarkup
         };
         return await PostAsync<BleMessage>("sendPhoto", request, cancellationToken);
@@ -166,19 +164,19 @@ public class HexaBaleClient
     /// <param name="document">Document to send. Can be a file_id, URL, or local path.</param>
     /// <param name="caption">Optional caption for the document (0-1024 characters).</param>
     /// <param name="parseMode">Mode for parsing entities in the caption.</param>
+    /// <param name="replyToMessageId">ID of the original message to reply to.</param>
+    /// <param name="disableNotification">If true, sends the message silently.</param>
     /// <param name="replyMarkup">Inline keyboard markup for interactive buttons.</param>
     /// <param name="cancellationToken">Cancellation token for the asynchronous operation.</param>
     /// <returns>A <see cref="BleMessage"/> object containing information about the sent message, or null if failed.</returns>
     /// <exception cref="BleApiException">Thrown when the API returns an error response.</exception>
-    /// <remarks>
-    /// Documents up to 50 MB are supported. Thumbnails may be generated for some file types.
-    /// Common document types: PDF, TXT, ZIP, etc.
-    /// </remarks>
     public async Task<BleMessage?> SendDocumentAsync(
         long chatId,
         string document,
         string? caption = null,
         BleParseMode? parseMode = null,
+        int? replyToMessageId = null,
+        bool disableNotification = false,
         BleInlineKeyboardMarkup? replyMarkup = null,
         CancellationToken cancellationToken = default)
     {
@@ -188,6 +186,8 @@ public class HexaBaleClient
             document,
             caption,
             parse_mode = parseMode?.ToString(),
+            reply_to_message_id = replyToMessageId,
+            disable_notification = disableNotification,
             reply_markup = replyMarkup
         };
         return await PostAsync<BleMessage>("sendDocument", request, cancellationToken);
@@ -200,6 +200,8 @@ public class HexaBaleClient
     /// <param name="video">Video to send. Can be a file_id, URL, or local path.</param>
     /// <param name="caption">Optional caption for the video (0-1024 characters).</param>
     /// <param name="parseMode">Mode for parsing entities in the caption.</param>
+    /// <param name="replyToMessageId">ID of the original message to reply to.</param>
+    /// <param name="disableNotification">If true, sends the message silently.</param>
     /// <param name="duration">Duration of the video in seconds.</param>
     /// <param name="width">Video width in pixels.</param>
     /// <param name="height">Video height in pixels.</param>
@@ -207,15 +209,13 @@ public class HexaBaleClient
     /// <param name="cancellationToken">Cancellation token for the asynchronous operation.</param>
     /// <returns>A <see cref="BleMessage"/> object containing information about the sent message, or null if failed.</returns>
     /// <exception cref="BleApiException">Thrown when the API returns an error response.</exception>
-    /// <remarks>
-    /// Video files up to 50 MB are supported. Supported formats: MP4, AVI, MKV, MOV.
-    /// The video will be compressed by Bale if it exceeds certain size limits.
-    /// </remarks>
     public async Task<BleMessage?> SendVideoAsync(
         long chatId,
         string video,
         string? caption = null,
         BleParseMode? parseMode = null,
+        int? replyToMessageId = null,
+        bool disableNotification = false,
         int? duration = null,
         int? width = null,
         int? height = null,
@@ -228,6 +228,8 @@ public class HexaBaleClient
             video,
             caption,
             parse_mode = parseMode?.ToString(),
+            reply_to_message_id = replyToMessageId,
+            disable_notification = disableNotification,
             duration,
             width,
             height,
@@ -243,6 +245,8 @@ public class HexaBaleClient
     /// <param name="audio">Audio file to send. Can be a file_id, URL, or local path.</param>
     /// <param name="caption">Optional caption for the audio (0-1024 characters).</param>
     /// <param name="parseMode">Mode for parsing entities in the caption.</param>
+    /// <param name="replyToMessageId">ID of the original message to reply to.</param>
+    /// <param name="disableNotification">If true, sends the message silently.</param>
     /// <param name="duration">Duration of the audio in seconds.</param>
     /// <param name="performer">Performer/singer name of the audio track.</param>
     /// <param name="title">Title of the audio track.</param>
@@ -250,15 +254,13 @@ public class HexaBaleClient
     /// <param name="cancellationToken">Cancellation token for the asynchronous operation.</param>
     /// <returns>A <see cref="BleMessage"/> object containing information about the sent message, or null if failed.</returns>
     /// <exception cref="BleApiException">Thrown when the API returns an error response.</exception>
-    /// <remarks>
-    /// Audio files up to 50 MB are supported. Supported formats: MP3, M4A, OGG, WAV.
-    /// The performer and title will be displayed in the music player interface.
-    /// </remarks>
     public async Task<BleMessage?> SendAudioAsync(
         long chatId,
         string audio,
         string? caption = null,
         BleParseMode? parseMode = null,
+        int? replyToMessageId = null,
+        bool disableNotification = false,
         int? duration = null,
         string? performer = null,
         string? title = null,
@@ -271,6 +273,8 @@ public class HexaBaleClient
             audio,
             caption,
             parse_mode = parseMode?.ToString(),
+            reply_to_message_id = replyToMessageId,
+            disable_notification = disableNotification,
             duration,
             performer,
             title,
@@ -286,20 +290,20 @@ public class HexaBaleClient
     /// <param name="voice">Voice message to send. Can be a file_id, URL, or local path.</param>
     /// <param name="caption">Optional caption for the voice message (0-1024 characters).</param>
     /// <param name="parseMode">Mode for parsing entities in the caption.</param>
+    /// <param name="replyToMessageId">ID of the original message to reply to.</param>
+    /// <param name="disableNotification">If true, sends the message silently.</param>
     /// <param name="duration">Duration of the voice message in seconds.</param>
     /// <param name="replyMarkup">Inline keyboard markup for interactive buttons.</param>
     /// <param name="cancellationToken">Cancellation token for the asynchronous operation.</param>
     /// <returns>A <see cref="BleMessage"/> object containing information about the sent message, or null if failed.</returns>
     /// <exception cref="BleApiException">Thrown when the API returns an error response.</exception>
-    /// <remarks>
-    /// Voice messages are displayed differently from audio files (no album art, simple player).
-    /// Supported formats: OGG (OPUS) encoded. Maximum size: 50 MB.
-    /// </remarks>
     public async Task<BleMessage?> SendVoiceAsync(
         long chatId,
         string voice,
         string? caption = null,
         BleParseMode? parseMode = null,
+        int? replyToMessageId = null,
+        bool disableNotification = false,
         int? duration = null,
         BleInlineKeyboardMarkup? replyMarkup = null,
         CancellationToken cancellationToken = default)
@@ -310,6 +314,8 @@ public class HexaBaleClient
             voice,
             caption,
             parse_mode = parseMode?.ToString(),
+            reply_to_message_id = replyToMessageId,
+            disable_notification = disableNotification,
             duration,
             reply_markup = replyMarkup
         };
@@ -323,6 +329,8 @@ public class HexaBaleClient
     /// <param name="animation">Animation to send. Can be a file_id, URL, or local path.</param>
     /// <param name="caption">Optional caption for the animation (0-1024 characters).</param>
     /// <param name="parseMode">Mode for parsing entities in the caption.</param>
+    /// <param name="replyToMessageId">ID of the original message to reply to.</param>
+    /// <param name="disableNotification">If true, sends the message silently.</param>
     /// <param name="duration">Duration of the animation in seconds.</param>
     /// <param name="width">Animation width in pixels.</param>
     /// <param name="height">Animation height in pixels.</param>
@@ -330,15 +338,13 @@ public class HexaBaleClient
     /// <param name="cancellationToken">Cancellation token for the asynchronous operation.</param>
     /// <returns>A <see cref="BleMessage"/> object containing information about the sent message, or null if failed.</returns>
     /// <exception cref="BleApiException">Thrown when the API returns an error response.</exception>
-    /// <remarks>
-    /// Animations are displayed with a play button and loop automatically.
-    /// Maximum size: 50 MB. Supported formats: GIF, MPEG4.
-    /// </remarks>
     public async Task<BleMessage?> SendAnimationAsync(
         long chatId,
         string animation,
         string? caption = null,
         BleParseMode? parseMode = null,
+        int? replyToMessageId = null,
+        bool disableNotification = false,
         int? duration = null,
         int? width = null,
         int? height = null,
@@ -351,6 +357,8 @@ public class HexaBaleClient
             animation,
             caption,
             parse_mode = parseMode?.ToString(),
+            reply_to_message_id = replyToMessageId,
+            disable_notification = disableNotification,
             duration,
             width,
             height,
@@ -365,6 +373,8 @@ public class HexaBaleClient
     /// <param name="chatId">Unique identifier for the target chat.</param>
     /// <param name="latitude">Latitude of the location (between -90 and 90).</param>
     /// <param name="longitude">Longitude of the location (between -180 and 180).</param>
+    /// <param name="replyToMessageId">ID of the original message to reply to.</param>
+    /// <param name="disableNotification">If true, sends the message silently.</param>
     /// <param name="horizontalAccuracy">Radius of uncertainty for the location in meters (0-1500).</param>
     /// <param name="livePeriod">Period in seconds for which the location will be updated (live location).</param>
     /// <param name="heading">Direction in which the user is moving (0-360).</param>
@@ -373,14 +383,12 @@ public class HexaBaleClient
     /// <param name="cancellationToken">Cancellation token for the asynchronous operation.</param>
     /// <returns>A <see cref="BleMessage"/> object containing information about the sent message, or null if failed.</returns>
     /// <exception cref="BleApiException">Thrown when the API returns an error response.</exception>
-    /// <remarks>
-    /// The location appears as a map preview with a pin at the specified coordinates.
-    /// Live locations can be updated by calling this method again with the same live_period.
-    /// </remarks>
     public async Task<BleMessage?> SendLocationAsync(
         long chatId,
         float latitude,
         float longitude,
+        int? replyToMessageId = null,
+        bool disableNotification = false,
         float? horizontalAccuracy = null,
         int? livePeriod = null,
         int? heading = null,
@@ -393,6 +401,8 @@ public class HexaBaleClient
             chat_id = chatId,
             latitude,
             longitude,
+            reply_to_message_id = replyToMessageId,
+            disable_notification = disableNotification,
             horizontal_accuracy = horizontalAccuracy,
             live_period = livePeriod,
             heading,
@@ -410,6 +420,8 @@ public class HexaBaleClient
     /// <param name="longitude">Longitude of the venue.</param>
     /// <param name="title">Name of the venue (e.g., "Starbucks").</param>
     /// <param name="address">Address of the venue (e.g., "123 Main Street").</param>
+    /// <param name="replyToMessageId">ID of the original message to reply to.</param>
+    /// <param name="disableNotification">If true, sends the message silently.</param>
     /// <param name="foursquareId">Foursquare identifier of the venue.</param>
     /// <param name="foursquareType">Foursquare type of the venue (e.g., "coffee_shop").</param>
     /// <param name="googlePlaceId">Google Places identifier of the venue.</param>
@@ -418,16 +430,14 @@ public class HexaBaleClient
     /// <param name="cancellationToken">Cancellation token for the asynchronous operation.</param>
     /// <returns>A <see cref="BleMessage"/> object containing information about the sent message, or null if failed.</returns>
     /// <exception cref="BleApiException">Thrown when the API returns an error response.</exception>
-    /// <remarks>
-    /// Venues appear as location pins with the title and address displayed prominently.
-    /// Foursquare and Google Place IDs help provide additional venue information.
-    /// </remarks>
     public async Task<BleMessage?> SendVenueAsync(
         long chatId,
         float latitude,
         float longitude,
         string title,
         string address,
+        int? replyToMessageId = null,
+        bool disableNotification = false,
         string? foursquareId = null,
         string? foursquareType = null,
         string? googlePlaceId = null,
@@ -442,6 +452,8 @@ public class HexaBaleClient
             longitude,
             title,
             address,
+            reply_to_message_id = replyToMessageId,
+            disable_notification = disableNotification,
             foursquare_id = foursquareId,
             foursquare_type = foursquareType,
             google_place_id = googlePlaceId,
@@ -458,20 +470,20 @@ public class HexaBaleClient
     /// <param name="phoneNumber">Contact's phone number (with international format recommended).</param>
     /// <param name="firstName">Contact's first name.</param>
     /// <param name="lastName">Optional contact's last name.</param>
+    /// <param name="replyToMessageId">ID of the original message to reply to.</param>
+    /// <param name="disableNotification">If true, sends the message silently.</param>
     /// <param name="vcard">Optional vCard representation of the contact (4.0 format).</param>
     /// <param name="replyMarkup">Inline keyboard markup for interactive buttons.</param>
     /// <param name="cancellationToken">Cancellation token for the asynchronous operation.</param>
     /// <returns>A <see cref="BleMessage"/> object containing information about the sent message, or null if failed.</returns>
     /// <exception cref="BleApiException">Thrown when the API returns an error response.</exception>
-    /// <remarks>
-    /// The contact appears as a shareable contact card that users can save to their address book.
-    /// If vCard is provided, it overrides the phone_number, first_name, and last_name fields.
-    /// </remarks>
     public async Task<BleMessage?> SendContactAsync(
         long chatId,
         string phoneNumber,
         string firstName,
         string? lastName = null,
+        int? replyToMessageId = null,
+        bool disableNotification = false,
         string? vcard = null,
         BleInlineKeyboardMarkup? replyMarkup = null,
         CancellationToken cancellationToken = default)
@@ -482,6 +494,8 @@ public class HexaBaleClient
             phone_number = phoneNumber,
             first_name = firstName,
             last_name = lastName,
+            reply_to_message_id = replyToMessageId,
+            disable_notification = disableNotification,
             vcard,
             reply_markup = replyMarkup
         };
@@ -494,6 +508,8 @@ public class HexaBaleClient
     /// <param name="chatId">Unique identifier for the target chat.</param>
     /// <param name="question">Poll question (1-300 characters).</param>
     /// <param name="options">List of answer options (2-10 options, each 1-100 characters).</param>
+    /// <param name="replyToMessageId">ID of the original message to reply to.</param>
+    /// <param name="disableNotification">If true, sends the message silently.</param>
     /// <param name="isAnonymous">If true, votes are anonymous (default: true).</param>
     /// <param name="type">Poll type: "quiz" or "regular" (default: "regular").</param>
     /// <param name="allowsMultipleAnswers">If true, users can select multiple answers (regular polls only).</param>
@@ -507,19 +523,12 @@ public class HexaBaleClient
     /// <param name="cancellationToken">Cancellation token for the asynchronous operation.</param>
     /// <returns>A <see cref="BleMessage"/> object containing information about the sent message, or null if failed.</returns>
     /// <exception cref="BleApiException">Thrown when the API returns an error response.</exception>
-    /// <remarks>
-    /// <para>
-    /// Regular polls allow multiple answers and show vote percentages. Quiz polls have one correct answer
-    /// and can show explanations when users answer incorrectly.
-    /// </para>
-    /// <para>
-    /// Polls can be configured to close automatically after open_period seconds or at a specific close_date.
-    /// </para>
-    /// </remarks>
     public async Task<BleMessage?> SendPollAsync(
         long chatId,
         string question,
         List<string> options,
+        int? replyToMessageId = null,
+        bool disableNotification = false,
         bool? isAnonymous = null,
         string? type = null,
         bool? allowsMultipleAnswers = null,
@@ -537,6 +546,8 @@ public class HexaBaleClient
             chat_id = chatId,
             question,
             options = options.Select(o => new { text = o }),
+            reply_to_message_id = replyToMessageId,
+            disable_notification = disableNotification,
             is_anonymous = isAnonymous,
             type,
             allows_multiple_answers = allowsMultipleAnswers,
@@ -555,23 +566,17 @@ public class HexaBaleClient
     /// Sends a random dice result with an animated emoji.
     /// </summary>
     /// <param name="chatId">Unique identifier for the target chat.</param>
+    /// <param name="replyToMessageId">ID of the original message to reply to.</param>
+    /// <param name="disableNotification">If true, sends the message silently.</param>
     /// <param name="emoji">Emoji for the dice: "🎲", "🎯", "🏀", "⚽", "🎳", or "🎰".</param>
     /// <param name="replyMarkup">Inline keyboard markup for interactive buttons.</param>
     /// <param name="cancellationToken">Cancellation token for the asynchronous operation.</param>
     /// <returns>A <see cref="BleMessage"/> object containing information about the sent message, or null if failed.</returns>
     /// <exception cref="BleApiException">Thrown when the API returns an error response.</exception>
-    /// <remarks>
-    /// <para>
-    /// Different emojis produce different animated results:
-    /// - 🎲: Random value 1-6
-    /// - 🎯: Random value 1-6 (bullseye is 6)
-    /// - 🏀/⚽: Random value 1-5 (basket goes in at 5)
-    /// - 🎳: Random value 1-6 (strike is 6)
-    /// - 🎰: Random values for slots
-    /// </para>
-    /// </remarks>
     public async Task<BleMessage?> SendDiceAsync(
         long chatId,
+        int? replyToMessageId = null,
+        bool disableNotification = false,
         string? emoji = null,
         BleInlineKeyboardMarkup? replyMarkup = null,
         CancellationToken cancellationToken = default)
@@ -579,6 +584,8 @@ public class HexaBaleClient
         var request = new
         {
             chat_id = chatId,
+            reply_to_message_id = replyToMessageId,
+            disable_notification = disableNotification,
             emoji,
             reply_markup = replyMarkup
         };
@@ -586,70 +593,20 @@ public class HexaBaleClient
     }
 
     /// <summary>
-    /// Sends a media group (album) with an optional inline keyboard message.
+    /// Sends a media group (album) with multiple photos, videos.
     /// </summary>
     /// <param name="chatId">Unique identifier for the target chat.</param>
     /// <param name="media">List of media items to send as an album (2-10 items).</param>
-    /// <param name="replyMarkup">Optional inline keyboard to send as a separate message after the album.</param>
-    /// <param name="keyboardMessage">Text for the keyboard message (default: "📌 Options:").</param>
-    /// <param name="disableNotification">If true, sends the album silently.</param>
-    /// <param name="cancellationToken">Cancellation token for the asynchronous operation.</param>
-    /// <returns>
-    /// A tuple containing:
-    /// <list type="bullet">
-    /// <item><description>MediaMessages: List of sent media messages or null if failed</description></item>
-    /// <item><description>KeyboardMessage: Sent keyboard message or null if no keyboard was provided</description></item>
-    /// </list>
-    /// </returns>
-    /// <exception cref="BleApiException">Thrown when the API returns an error response.</exception>
-    /// <remarks>
-    /// This method sends a media group (album) first, then waits 500ms and sends a separate message
-    /// with the inline keyboard. This is useful when you want to attach a keyboard to an album since
-    /// albums don't natively support inline keyboards.
-    /// </remarks>
-    public async Task<(List<BleMessage>? MediaMessages, BleMessage? KeyboardMessage)> SendMediaGroupWithKeyboardAsync(
-        long chatId,
-        List<BleInputMedia> media,
-        BleInlineKeyboardMarkup? replyMarkup = null,
-        string? keyboardMessage = "📌 Options:",
-        bool disableNotification = false,
-        CancellationToken cancellationToken = default)
-    {
-        var mediaMessages = await SendMediaGroupAsync(chatId, media, disableNotification, null, cancellationToken);
-
-        BleMessage? keyboardMsg = null;
-        if (replyMarkup != null && mediaMessages != null && mediaMessages.Any())
-        {
-            await Task.Delay(500, cancellationToken);
-            keyboardMsg = await SendMessageAsync(chatId, keyboardMessage ?? "📌 Options:", null, null, false, replyMarkup, cancellationToken);
-        }
-
-        return (mediaMessages, keyboardMsg);
-    }
-
-    /// <summary>
-    /// Sends a media group (album) with multiple photos, videos, or documents.
-    /// </summary>
-    /// <param name="chatId">Unique identifier for the target chat.</param>
-    /// <param name="media">List of media items to send as an album (2-10 items).</param>
+    /// <param name="replyToMessageId">ID of the original message to reply to.</param>
     /// <param name="disableNotification">If true, sends the message silently.</param>
     /// <param name="replyMarkup">Inline keyboard markup (note: albums don't support inline keyboards on Bale).</param>
     /// <param name="cancellationToken">Cancellation token for the asynchronous operation.</param>
     /// <returns>List of <see cref="BleMessage"/> objects for each media item, or null if failed.</returns>
     /// <exception cref="BleApiException">Thrown when the API returns an error response.</exception>
-    /// <remarks>
-    /// <para>
-    /// Media groups (albums) allow sending up to 10 photos or videos at once.
-    /// All media must be of the same type (all photos or all videos).
-    /// </para>
-    /// <para>
-    /// Note: Inline keyboards are not supported directly on media groups in Bale API.
-    /// Use <see cref="SendMediaGroupWithKeyboardAsync"/> for keyboard support.
-    /// </para>
-    /// </remarks>
     public async Task<List<BleMessage>?> SendMediaGroupAsync(
         long chatId,
         List<BleInputMedia> media,
+        int? replyToMessageId = null,
         bool disableNotification = false,
         BleInlineKeyboardMarkup? replyMarkup = null,
         CancellationToken cancellationToken = default)
@@ -664,6 +621,7 @@ public class HexaBaleClient
                 caption = m.Caption,
                 parse_mode = m.ParseMode?.ToString()
             }),
+            reply_to_message_id = replyToMessageId,
             disable_notification = disableNotification,
             reply_markup = replyMarkup
         };
@@ -671,9 +629,48 @@ public class HexaBaleClient
         return await PostAsync<List<BleMessage>>("sendMediaGroup", payload, cancellationToken);
     }
 
+    /// <summary>
+    /// Sends a media group (album) with an optional inline keyboard message.
+    /// </summary>
+    /// <param name="chatId">Unique identifier for the target chat.</param>
+    /// <param name="media">List of media items to send as an album (2-10 items).</param>
+    /// <param name="replyToMessageId">ID of the original message to reply to.</param>
+    /// <param name="disableNotification">If true, sends the album silently.</param>
+    /// <param name="replyMarkup">Optional inline keyboard to send as a separate message after the album.</param>
+    /// <param name="keyboardMessage">Text for the keyboard message (default: "📌 Options:").</param>
+    /// <param name="cancellationToken">Cancellation token for the asynchronous operation.</param>
+    /// <returns>
+    /// A tuple containing:
+    /// <list type="bullet">
+    /// <item><description>MediaMessages: List of sent media messages or null if failed</description></item>
+    /// <item><description>KeyboardMessage: Sent keyboard message or null if no keyboard was provided</description></item>
+    /// </list>
+    /// </returns>
+    /// <exception cref="BleApiException">Thrown when the API returns an error response.</exception>
+    public async Task<(List<BleMessage>? MediaMessages, BleMessage? KeyboardMessage)> SendMediaGroupWithKeyboardAsync(
+        long chatId,
+        List<BleInputMedia> media,
+        int? replyToMessageId = null,
+        bool disableNotification = false,
+        BleInlineKeyboardMarkup? replyMarkup = null,
+        string? keyboardMessage = "📌 Options:",
+        CancellationToken cancellationToken = default)
+    {
+        var mediaMessages = await SendMediaGroupAsync(chatId, media, replyToMessageId, disableNotification, null, cancellationToken);
+
+        BleMessage? keyboardMsg = null;
+        if (replyMarkup != null && mediaMessages != null && mediaMessages.Any())
+        {
+            await Task.Delay(500, cancellationToken);
+            keyboardMsg = await SendMessageAsync(chatId, keyboardMessage ?? "📌 Options:", null, null, false, replyMarkup, cancellationToken);
+        }
+
+        return (mediaMessages, keyboardMsg);
+    }
+
     #endregion
 
-    #region Reply Keyboard Methods (Custom Keyboard that replaces user's keyboard)
+    #region Reply Keyboard Methods
 
     /// <summary>
     /// Sends a message with a custom reply keyboard that replaces the user's default keyboard.
@@ -682,24 +679,18 @@ public class HexaBaleClient
     /// <param name="text">Text of the message to send.</param>
     /// <param name="replyMarkup">Custom reply keyboard markup with buttons to display.</param>
     /// <param name="parseMode">Mode for parsing entities in the message text.</param>
+    /// <param name="replyToMessageId">ID of the original message to reply to.</param>
+    /// <param name="disableNotification">If true, sends the message silently.</param>
     /// <param name="cancellationToken">Cancellation token for the asynchronous operation.</param>
     /// <returns>A <see cref="BleMessage"/> object containing information about the sent message, or null if failed.</returns>
     /// <exception cref="BleApiException">Thrown when the API returns an error response.</exception>
-    /// <remarks>
-    /// <para>
-    /// Reply keyboards replace the user's default keyboard with custom buttons.
-    /// When a button is pressed, the button text is sent as a message to the bot.
-    /// </para>
-    /// <para>
-    /// Unlike inline keyboards, reply keyboards are persistent until removed with
-    /// <see cref="RemoveReplyKeyboardAsync"/> or the user closes them manually.
-    /// </para>
-    /// </remarks>
     public async Task<BleMessage?> SendReplyKeyboardAsync(
         long chatId,
         string text,
         BleReplyKeyboardMarkup replyMarkup,
         BleParseMode? parseMode = null,
+        int? replyToMessageId = null,
+        bool disableNotification = false,
         CancellationToken cancellationToken = default)
     {
         var request = new
@@ -707,6 +698,8 @@ public class HexaBaleClient
             chat_id = chatId,
             text,
             parse_mode = parseMode?.ToString(),
+            reply_to_message_id = replyToMessageId,
+            disable_notification = disableNotification,
             reply_markup = replyMarkup
         };
         return await PostAsync<BleMessage>("sendMessage", request, cancellationToken);
@@ -717,16 +710,16 @@ public class HexaBaleClient
     /// </summary>
     /// <param name="chatId">Unique identifier for the target chat.</param>
     /// <param name="text">Text to display when removing the keyboard (default: "Keyboard removed").</param>
+    /// <param name="replyToMessageId">ID of the original message to reply to.</param>
+    /// <param name="disableNotification">If true, sends the message silently.</param>
     /// <param name="cancellationToken">Cancellation token for the asynchronous operation.</param>
     /// <returns>A <see cref="BleMessage"/> object containing information about the sent message, or null if failed.</returns>
     /// <exception cref="BleApiException">Thrown when the API returns an error response.</exception>
-    /// <remarks>
-    /// Sends a message with the remove_keyboard flag set to true.
-    /// After this method is called, the user will see their normal keyboard again.
-    /// </remarks>
     public async Task<BleMessage?> RemoveReplyKeyboardAsync(
         long chatId,
         string text = "Keyboard removed",
+        int? replyToMessageId = null,
+        bool disableNotification = false,
         CancellationToken cancellationToken = default)
     {
         var replyMarkup = new BleReplyKeyboardMarkup
@@ -738,6 +731,8 @@ public class HexaBaleClient
         {
             chat_id = chatId,
             text,
+            reply_to_message_id = replyToMessageId,
+            disable_notification = disableNotification,
             reply_markup = replyMarkup
         };
         return await PostAsync<BleMessage>("sendMessage", request, cancellationToken);
@@ -748,18 +743,18 @@ public class HexaBaleClient
     /// </summary>
     /// <param name="chatId">Unique identifier for the target chat.</param>
     /// <param name="text">Text of the message to send.</param>
+    /// <param name="replyToMessageId">ID of the original message to reply to.</param>
+    /// <param name="disableNotification">If true, sends the message silently.</param>
     /// <param name="forceReply">If true, forces the user to reply (default: true).</param>
     /// <param name="inputFieldPlaceholder">Optional placeholder text in the reply input field.</param>
     /// <param name="cancellationToken">Cancellation token for the asynchronous operation.</param>
     /// <returns>A <see cref="BleMessage"/> object containing information about the sent message, or null if failed.</returns>
     /// <exception cref="BleApiException">Thrown when the API returns an error response.</exception>
-    /// <remarks>
-    /// When force_reply is used, the user's keyboard is replaced with a reply interface
-    /// that targets the bot's message. The user must reply to proceed.
-    /// </remarks>
     public async Task<BleMessage?> ForceReplyAsync(
         long chatId,
         string text,
+        int? replyToMessageId = null,
+        bool disableNotification = false,
         bool forceReply = true,
         string? inputFieldPlaceholder = null,
         CancellationToken cancellationToken = default)
@@ -774,6 +769,8 @@ public class HexaBaleClient
         {
             chat_id = chatId,
             text,
+            reply_to_message_id = replyToMessageId,
+            disable_notification = disableNotification,
             reply_markup = replyMarkup
         };
         return await PostAsync<BleMessage>("sendMessage", request, cancellationToken);
@@ -790,6 +787,8 @@ public class HexaBaleClient
     /// <param name="text">Text of the message to send.</param>
     /// <param name="replyMarkup">Inline keyboard markup for interactive buttons.</param>
     /// <param name="parseMode">Mode for parsing entities in the message text.</param>
+    /// <param name="replyToMessageId">ID of the original message to reply to.</param>
+    /// <param name="disableNotification">If true, sends the message silently.</param>
     /// <param name="cancellationToken">Cancellation token for the asynchronous operation.</param>
     /// <returns>A <see cref="BleMessage"/> object containing information about the sent message, or null if failed.</returns>
     /// <remarks>
@@ -801,9 +800,11 @@ public class HexaBaleClient
         string text,
         BleInlineKeyboardMarkup replyMarkup,
         BleParseMode? parseMode = null,
+        int? replyToMessageId = null,
+        bool disableNotification = false,
         CancellationToken cancellationToken = default)
     {
-        return await SendMessageAsync(chatId, text, parseMode, null, false, replyMarkup, cancellationToken);
+        return await SendMessageAsync(chatId, text, parseMode, replyToMessageId, disableNotification, replyMarkup, cancellationToken);
     }
 
     #endregion
@@ -819,16 +820,6 @@ public class HexaBaleClient
     /// <param name="cancellationToken">Cancellation token for the asynchronous operation.</param>
     /// <returns>List of <see cref="BleUpdate"/> objects containing new updates, or empty list if none.</returns>
     /// <exception cref="BleApiException">Thrown when the API returns an error response.</exception>
-    /// <remarks>
-    /// <para>
-    /// Use this method when you don't have a webhook configured (polling method).
-    /// The method will wait up to 'timeout' seconds for new updates before returning.
-    /// </para>
-    /// <para>
-    /// To avoid receiving the same update multiple times, set 'offset' to the highest
-    /// update_id you've already processed + 1.
-    /// </para>
-    /// </remarks>
     public async Task<List<BleUpdate>> GetUpdatesAsync(
         int offset = 0,
         int limit = 100,
@@ -846,10 +837,6 @@ public class HexaBaleClient
     /// <param name="cancellationToken">Cancellation token for the asynchronous operation.</param>
     /// <returns>True if the webhook was successfully deleted, false otherwise.</returns>
     /// <exception cref="BleApiException">Thrown when the API returns an error response.</exception>
-    /// <remarks>
-    /// After deleting the webhook, you can start using <see cref="GetUpdatesAsync"/> for polling.
-    /// Returns true even if no webhook was set.
-    /// </remarks>
     public async Task<bool> DeleteWebhookAsync(CancellationToken cancellationToken = default)
     {
         return await PostAsync<bool>("deleteWebhook", null, cancellationToken);
@@ -864,16 +851,6 @@ public class HexaBaleClient
     /// <param name="cancellationToken">Cancellation token for the asynchronous operation.</param>
     /// <returns>True if the webhook was successfully set, false otherwise.</returns>
     /// <exception cref="BleApiException">Thrown when the API returns an error response.</exception>
-    /// <remarks>
-    /// <para>
-    /// The webhook URL must use HTTPS and can contain a path (e.g., https://example.com/bot).
-    /// After setting a webhook, polling with <see cref="GetUpdatesAsync"/> will not work.
-    /// </para>
-    /// <para>
-    /// Allowed updates examples: "message", "callback_query", "edited_message", etc.
-    /// Setting allowed_updates = null means your bot will receive all update types.
-    /// </para>
-    /// </remarks>
     public async Task<bool> SetWebhookAsync(
         string url,
         int? maxConnections = null,
@@ -890,10 +867,6 @@ public class HexaBaleClient
     /// <param name="cancellationToken">Cancellation token for the asynchronous operation.</param>
     /// <returns>A <see cref="BleWebhookInfo"/> object containing webhook details, or null if not configured.</returns>
     /// <exception cref="BleApiException">Thrown when the API returns an error response.</exception>
-    /// <remarks>
-    /// Returns information including the webhook URL, pending update count, last error date and message,
-    /// and custom certificate status if one was provided.
-    /// </remarks>
     public async Task<BleWebhookInfo?> GetWebhookInfoAsync(CancellationToken cancellationToken = default)
     {
         return await GetAsync<BleWebhookInfo>("getWebhookInfo", cancellationToken);
@@ -911,10 +884,6 @@ public class HexaBaleClient
     /// <param name="cancellationToken">Cancellation token for the asynchronous operation.</param>
     /// <returns>A <see cref="BleChatMember"/> object containing member information, or null if not found.</returns>
     /// <exception cref="BleApiException">Thrown when the API returns an error response.</exception>
-    /// <remarks>
-    /// Returns information about the user's status in the chat (creator, administrator, member, restricted, left, or kicked).
-    /// Also returns custom title for administrators and restrictions for restricted users.
-    /// </remarks>
     public async Task<BleChatMember?> GetChatMemberAsync(
         long chatId,
         long userId,
@@ -922,6 +891,94 @@ public class HexaBaleClient
     {
         var request = new { chat_id = chatId, user_id = userId };
         return await PostAsync<BleChatMember>("getChatMember", request, cancellationToken);
+    }
+
+    /// <summary>
+    /// Gets a list of administrators in a chat.
+    /// </summary>
+    /// <param name="chatId">Unique identifier for the target chat.</param>
+    /// <param name="cancellationToken">Cancellation token for the asynchronous operation.</param>
+    /// <returns>A list of <see cref="BleChatMember"/> objects for all administrators, or empty list if none.</returns>
+    /// <exception cref="BleApiException">Thrown when the API returns an error response.</exception>
+    /// <remarks>
+    /// The bot must be an administrator in the chat to get this information.
+    /// Returns all chat administrators including the creator.
+    /// </remarks>
+    public async Task<List<BleChatMember>> GetChatAdministratorsAsync(
+        long chatId,
+        CancellationToken cancellationToken = default)
+    {
+        var request = new { chat_id = chatId };
+        var result = await PostAsync<BleChatMember[]>("getChatAdministrators", request, cancellationToken);
+        return result?.ToList() ?? new List<BleChatMember>();
+    }
+
+    /// <summary>
+    /// Gets the number of members in a chat.
+    /// </summary>
+    /// <param name="chatId">Unique identifier for the target chat.</param>
+    /// <param name="cancellationToken">Cancellation token for the asynchronous operation.</param>
+    /// <returns>The number of members in the chat, or null if not available.</returns>
+    /// <exception cref="BleApiException">Thrown when the API returns an error response.</exception>
+    /// <remarks>
+    /// The bot must be a member of the chat to get this information.
+    /// For supergroups and channels, this returns the member count.
+    /// </remarks>
+    public async Task<int?> GetChatMembersCountAsync(
+        long chatId,
+        CancellationToken cancellationToken = default)
+    {
+        var request = new { chat_id = chatId };
+        return await PostAsync<int>("getChatMembersCount", request, cancellationToken);
+    }
+
+    /// <summary>
+    /// Gets a list of members in a chat (paginated).
+    /// </summary>
+    /// <param name="chatId">Unique identifier for the target chat.</param>
+    /// <param name="offset">Offset for pagination (default: 0).</param>
+    /// <param name="limit">Maximum number of members to return (1-200, default: 100).</param>
+    /// <param name="cancellationToken">Cancellation token for the asynchronous operation.</param>
+    /// <returns>A list of <see cref="BleChatMember"/> objects, or empty list if none.</returns>
+    /// <exception cref="BleApiException">Thrown when the API returns an error response.</exception>
+    /// <remarks>
+    /// <para>
+    /// This method only works for supergroups and channels where the bot is an administrator.
+    /// Due to API limitations, some members may not be returned if the chat is very large.
+    /// </para>
+    /// <para>
+    /// Use <see cref="GetChatAdministratorsAsync"/> for getting administrators only,
+    /// which has no pagination limitations.
+    /// </para>
+    /// </remarks>
+    public async Task<List<BleChatMember>> GetChatMembersAsync(
+        long chatId,
+        int offset = 0,
+        int limit = 100,
+        CancellationToken cancellationToken = default)
+    {
+        var request = new { chat_id = chatId, offset, limit };
+        var result = await PostAsync<BleChatMember[]>("getChatMembers", request, cancellationToken);
+        return result?.ToList() ?? new List<BleChatMember>();
+    }
+
+    /// <summary>
+    /// Leaves a chat (group, supergroup, or channel).
+    /// </summary>
+    /// <param name="chatId">Unique identifier for the target chat.</param>
+    /// <param name="cancellationToken">Cancellation token for the asynchronous operation.</param>
+    /// <returns>True if the bot successfully left the chat, false otherwise.</returns>
+    /// <exception cref="BleApiException">Thrown when the API returns an error response.</exception>
+    /// <remarks>
+    /// After leaving, the bot will no longer receive updates from this chat
+    /// and cannot send messages to it unless re-invited.
+    /// </remarks>
+    public async Task<bool> LeaveChatAsync(
+        long chatId,
+        CancellationToken cancellationToken = default)
+    {
+        var request = new { chat_id = chatId };
+        return await PostAsync<bool>("leaveChat", request, cancellationToken);
     }
 
     #endregion
@@ -939,16 +996,6 @@ public class HexaBaleClient
     /// <param name="cancellationToken">Cancellation token for the asynchronous operation.</param>
     /// <returns>True if the answer was successfully sent, false otherwise.</returns>
     /// <exception cref="BleApiException">Thrown when the API returns an error response.</exception>
-    /// <remarks>
-    /// <para>
-    /// After the user presses an inline keyboard button, your bot receives a callback_query.
-    /// You must answer it within a few seconds to prevent the client from showing a timeout.
-    /// </para>
-    /// <para>
-    /// If showAlert is false (default), the notification appears as a toast message at the top of the screen.
-    /// If showAlert is true, it appears as an alert dialog that requires user dismissal.
-    /// </para>
-    /// </remarks>
     public async Task<bool> AnswerCallbackQueryAsync(
         string callbackQueryId,
         string? text = null,
@@ -983,15 +1030,6 @@ public class HexaBaleClient
     /// <param name="cancellationToken">Cancellation token for the asynchronous operation.</param>
     /// <returns>The edited <see cref="BleMessage"/> object, or null if failed.</returns>
     /// <exception cref="BleApiException">Thrown when the API returns an error response.</exception>
-    /// <remarks>
-    /// <para>
-    /// This method can edit any message sent by the bot, including those with inline keyboards.
-    /// The message text can be edited multiple times.
-    /// </para>
-    /// <para>
-    /// If parse_mode is not provided, the current parse mode of the message is preserved.
-    /// </para>
-    /// </remarks>
     public async Task<BleMessage?> EditMessageTextAsync(
         long chatId,
         int messageId,
@@ -1020,10 +1058,6 @@ public class HexaBaleClient
     /// <param name="cancellationToken">Cancellation token for the asynchronous operation.</param>
     /// <returns>True if the keyboard was successfully edited, false otherwise.</returns>
     /// <exception cref="BleApiException">Thrown when the API returns an error response.</exception>
-    /// <remarks>
-    /// Use this method when you only want to change the keyboard buttons without modifying the message text.
-    /// This is useful for pagination, loading states, or updating button states after user interaction.
-    /// </remarks>
     public async Task<bool> EditMessageReplyMarkupAsync(
         long chatId,
         int messageId,
@@ -1047,16 +1081,6 @@ public class HexaBaleClient
     /// <param name="cancellationToken">Cancellation token for the asynchronous operation.</param>
     /// <returns>True if the message was successfully deleted, false otherwise.</returns>
     /// <exception cref="BleApiException">Thrown when the API returns an error response.</exception>
-    /// <remarks>
-    /// <para>
-    /// The bot can delete its own messages in any chat without being an administrator.
-    /// To delete other users' messages, the bot must be an administrator in the chat.
-    /// </para>
-    /// <para>
-    /// In groups and supergroups, messages can only be deleted if the bot was sent 
-    /// less than 48 hours ago.
-    /// </para>
-    /// </remarks>
     public async Task<bool> DeleteMessageAsync(
         long chatId,
         int messageId,
@@ -1080,10 +1104,6 @@ public class HexaBaleClient
     /// <param name="cancellationToken">Cancellation token for the asynchronous operation.</param>
     /// <returns>The forwarded <see cref="BleMessage"/> object, or null if failed.</returns>
     /// <exception cref="BleApiException">Thrown when the API returns an error response.</exception>
-    /// <remarks>
-    /// Forwarded messages show the original sender's name and a "forwarded from" label.
-    /// The bot must be a member of both the source and target chats.
-    /// </remarks>
     public async Task<BleMessage?> ForwardMessageAsync(
         long chatId,
         long fromChatId,
@@ -1112,15 +1132,6 @@ public class HexaBaleClient
     /// <param name="cancellationToken">Cancellation token for the asynchronous operation.</param>
     /// <returns>The copied <see cref="BleMessage"/> object, or null if failed.</returns>
     /// <exception cref="BleApiException">Thrown when the API returns an error response.</exception>
-    /// <remarks>
-    /// <para>
-    /// Unlike forwarding, copying creates a new message without any indication it came from another chat.
-    /// The bot must be a member of both the source and target chats.
-    /// </para>
-    /// <para>
-    /// If caption is provided, it overrides the original message's caption.
-    /// </para>
-    /// </remarks>
     public async Task<BleMessage?> CopyMessageAsync(
         long chatId,
         long fromChatId,
