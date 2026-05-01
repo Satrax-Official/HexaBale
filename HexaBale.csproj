@@ -11,6 +11,11 @@
 		<!-- NuGet Package Properties -->
 		<PackageId>HexaBale</PackageId>
 		<Version>1.3.0</Version>
+		<PackageReleaseNotes>
+        Added chat management methods (GetChatAdministratorsAsync, GetChatMembersCountAsync, GetChatMembersAsync, LeaveChatAsync).
+        Added replyToMessageId and disableNotification to all media methods.
+        Complete XML documentation.
+    </PackageReleaseNotes>
 		<Authors>Satrax (Alireza Rangraz Jeddy / Ramin Rangraz Jeddy)</Authors>
 		<Company>Hexagon</Company>
 		<Description>Unofficial Bale Messenger Bot API client for .NET</Description>
