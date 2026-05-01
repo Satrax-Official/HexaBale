@@ -11,7 +11,6 @@ All notable changes to HexaBale will be documented in this file.
 - `LeaveChatAsync` - Bot can leave a chat
 - `replyToMessageId` parameter to all send methods (Photo, Video, Document, Audio, Voice, Animation, Location, Venue, Contact, Poll, Dice, MediaGroup)
 - `disableNotification` parameter to all media send methods
-- Complete XML documentation for all public methods
 
 ## [1.2.0] - 2026-04-26
 
