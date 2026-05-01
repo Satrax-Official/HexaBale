@@ -8,14 +8,13 @@
 		<SymbolPackageFormat>snupkg</SymbolPackageFormat>
 		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 
-		<!-- NuGet Package Properties -->
 		<PackageId>HexaBale</PackageId>
 		<Version>1.3.0</Version>
 		<PackageReleaseNotes>
-        Added chat management methods (GetChatAdministratorsAsync, GetChatMembersCountAsync, GetChatMembersAsync, LeaveChatAsync).
-        Added replyToMessageId and disableNotification to all media methods.
-        Complete XML documentation.
-    </PackageReleaseNotes>
+			Added chat management methods (GetChatAdministratorsAsync, GetChatMembersCountAsync, GetChatMembersAsync, LeaveChatAsync).
+			Added replyToMessageId and disableNotification to all media methods.
+			Complete XML documentation.
+		</PackageReleaseNotes>
 		<Authors>Satrax (Alireza Rangraz Jeddy / Ramin Rangraz Jeddy)</Authors>
 		<Company>Hexagon</Company>
 		<Description>Unofficial Bale Messenger Bot API client for .NET</Description>
@@ -25,9 +24,8 @@
 		<RepositoryUrl>https://github.com/Satrax-Official/HexaBale</RepositoryUrl>
 		<PackageReadmeFile>README.md</PackageReadmeFile>
 		<GenerateDocumentationFile>true</GenerateDocumentationFile>
-		<PackageIcon>icon.png</PackageIcon> 
+		<PackageIcon>icon.png</PackageIcon>
 
-		<!-- Assembly Properties -->
 		<AssemblyName>HexaBale</AssemblyName>
 		<RootNamespace>HexaBale</RootNamespace>
 	</PropertyGroup>
@@ -39,6 +37,10 @@
 
 	<ItemGroup>
 		<None Include="README.md" Pack="true" PackagePath="\" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<None Include="icon.png" Pack="true" PackagePath="\" />
 	</ItemGroup>
 
 </Project>
